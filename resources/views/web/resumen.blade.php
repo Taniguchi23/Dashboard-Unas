@@ -43,7 +43,7 @@
                                 <th scope="row">{{$key + 1}}</th>
                                 <td>{{$cve->codigo}}</td>
                                 <td>{{$cve->sourceIdentifier}}</td>
-                                <td class="{{Util::textoEstado($cve->metrics->isNotEmpty() ? $cve->metrics->first()->cvssData_integrityImpact : 'Unknown')}}">  <i class="fas fa-circle circle-icon " id="bolita"></i> {{ $cve->metrics->isNotEmpty() ? $cve->metrics->first()->cvssData_integrityImpact : 'Unknown'}}</td>
+                                <td class="{{Util::textoEstado($cve->metrics->isNotEmpty() ? $cve->metrics->first()->cvssData_baseSeverity : 'Unknown')}}">  <i class="fas fa-circle circle-icon " id="bolita"></i> {{ $cve->metrics->isNotEmpty() ? $cve->metrics->first()->cvssData_baseSeverity : 'Unknown'}}</td>
                                 <td>{{Util::formatoFechaPersonalizado($cve->published)}}</td>
                                 <td>
                                     <button type="button" data-bs-target="#largeModal" data-bs-toggle="modal" class="btn btn-m text-primary btnVer" data-id="{{$cve->id}}"><i class="bi bi-eye-fill"></i></button>

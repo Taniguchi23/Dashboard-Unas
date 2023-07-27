@@ -38,12 +38,14 @@ class Util
         $response = '';
        if ($texto == "HIGH"){
            $response = "danger";
-       }else if ($texto == "PARTIAL"){
+       }else if ($texto == "MEDIUM"){
            $response = "warning";
        }else if ($texto == "LOW"){
            $response = "success";
        }else if ($texto== "NONE"){
            $response = "info";
+       }else if($texto == "CRITICAL"){
+           $response = "dark";
        }else{
            $response = "secondary";
        }
