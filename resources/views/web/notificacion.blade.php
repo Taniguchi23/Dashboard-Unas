@@ -27,7 +27,7 @@
                             <div class="text-primary" id="respuesta"></div>
                             <div class="text-center">
                                 <button type="button" class="btn btn-primary btnSuscribirse">Suscribirse</button>
-                                <button type="button" class="btn btn-secondary">Reiniciar</button>
+                                <!--button type="button" class="btn btn-secondary">Reiniciar</button-->
                             </div>
                         </form><!-- End Horizontal Form -->
 

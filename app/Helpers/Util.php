@@ -53,4 +53,48 @@ class Util
     }
 
 
+    static function valorTexto($valor){
+        $response = '';
+        if ($valor <= 5 && $valor >= 0){
+            $response = 'LOW';
+        }else if($valor <= 7 && $valor > 5){
+            $response = 'MEDIUM';
+        }else if($valor <= 9 && $valor > 7 ){
+            $response = 'HIGH';
+        }else{
+            $response = 'CRITICAL';
+        }
+        return $response;
+    }
+
+    static function valorColor($valor){
+
+        $response = '';
+        if ($valor <= 5 && $valor >= 0){
+            $response = 'success';
+        }else if($valor <= 7 && $valor > 5){
+            $response = 'warning';
+        }else if($valor <= 9 && $valor > 7 ){
+            $response = 'danger';
+        }else{
+            $response = 'dark';
+        }
+
+        return 'text-'.$response;
+    }static function valorColorButton($valor){
+
+        $response = '';
+        if ($valor <= 5 && $valor >= 0){
+            $response = 'success';
+        }else if($valor <= 7 && $valor > 5){
+            $response = 'warning';
+        }else if($valor <= 9 && $valor > 7 ){
+            $response = 'danger';
+        }else{
+            $response = 'dark';
+        }
+
+        return 'btn-'.$response;
+    }
+
 }
