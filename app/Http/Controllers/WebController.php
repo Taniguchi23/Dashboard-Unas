@@ -66,7 +66,7 @@ class WebController extends Controller
             }
         }
 
-        $cves = Cve::orderByDesc('id')->take(20)->get();
+        $cves = Cve::orderByDesc('published')->take(20)->get();
 
         $datos = [
             'cveDos' =>  json_encode($cveDos),

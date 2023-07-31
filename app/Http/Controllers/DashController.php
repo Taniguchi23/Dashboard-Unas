@@ -136,10 +136,27 @@ class DashController extends Controller
                     Mail::to($usuario->email)->send(new ReporteEmail($email, $vistaDatos, $asunto, $remitente));
                 }
 
+            }else{
+                $correoAlternativo = 'vieradelaguila@gmail.com';
+                $vistaDatos = 'email.errorEmail';
+                $asunto = 'Reporte de vulnerabilidad';
+                $remitente = 'Giusseppe Viera';
+                $email = [
+                    "texto" => "Ha corrido bien pero no hay datos del api"
+                ];
+                Mail::to($correoAlternativo)->send(new ReporteEmail($email, $vistaDatos, $asunto, $remitente));
             }
         } catch (\Exception $e) {
             // Manejar el error, por ejemplo, registrar en el registro de errores
             // o enviar un correo electrónico al administrador informando del problema.
+            $correoAlternativo = 'vieradelaguila@gmail.com';
+            $vistaDatos = 'email.errorEmail';
+            $asunto = 'Reporte de vulnerabilidad';
+            $remitente = 'Giusseppe Viera';
+            $email = [
+                "texto" => "Error del api se ha demorado mucho en ejecutar"
+            ];
+            Mail::to($correoAlternativo)->send(new ReporteEmail($email, $vistaDatos, $asunto, $remitente));
             dd($e->getMessage());
         }
     }

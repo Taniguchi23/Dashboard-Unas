@@ -1,7 +1,9 @@
 @extends('layouts.app')
 @section('content')
-    <div class="d-flex">
-        <div class="col-lg-6 m-2">
+
+    <section class="section">
+        <div class="row">
+        <div class="col-lg-6 ">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">CVSS V3 </h5>
@@ -15,8 +17,8 @@
                             console.log(cv3);
                             echarts.init(document.querySelector("#pieChart")).setOption({
                                 title: {
-                                    text: 'Score Distribution',
-                                    subtext: '',
+                                    text: 'Score',
+                                    subtext: 'Distribution',
                                     left: 'center'
                                 },
                                 tooltip: {
@@ -75,7 +77,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-6 m-2">
+        <div class="col-lg-6 ">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">CVSS V2 </h5>
@@ -89,8 +91,8 @@
                             console.log(cv2);
                             echarts.init(document.querySelector("#pieChart2")).setOption({
                                 title: {
-                                    text: 'Score Distribution',
-                                    subtext: '',
+                                    text: 'Score',
+                                    subtext: 'Distribution',
                                     left: 'center'
                                 },
                                 tooltip: {
@@ -149,8 +151,8 @@
                 </div>
             </div>
         </div>
+        </div></section>
 
-    </div>
 
 
     <div class="card">
@@ -191,6 +193,7 @@
 
         </div>
     </div>
+
 
 @endsection
 @section('script')

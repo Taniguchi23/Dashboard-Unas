@@ -78,7 +78,8 @@
 
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                     <li class="dropdown-header">
-                        <h6>Grupo de Investigación en Redes y Seguridad</h6>
+                        <h6>Grupo de Investigación : <br>
+                            Redes, Seguridad y Gestión de TI</h6>
                         <span>UNAS</span>
                     </li>
                     <li>
