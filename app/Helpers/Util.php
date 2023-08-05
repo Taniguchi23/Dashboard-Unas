@@ -81,7 +81,8 @@ class Util
         }
 
         return 'text-'.$response;
-    }static function valorColorButton($valor){
+    }
+    static function valorColorButton($valor){
 
         $response = '';
         if ($valor <= 5 && $valor >= 0){
@@ -97,4 +98,11 @@ class Util
         return 'btn-'.$response;
     }
 
+
+    static function estadoColor($estado){
+        return $estado == 'A' ? 'success' : 'warning';
+    }
+    static function estadoTexto($estado){
+        return $estado == 'A' ? 'Activo' : 'Inactivo';
+    }
 }

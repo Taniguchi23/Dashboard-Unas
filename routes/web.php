@@ -16,10 +16,13 @@ Route::group(['middleware'=> 'auth'],function (){
     Route::group(['prefix'=>'admin','middleware'=>'auth'], function (){
         Route::controller(AdminController::class)->group(function (){
             Route::get('/lista/{tipo}','lista')->name('admin.lista');
-            Route::get('/filtros}','filtros')->name('admin.filtro');
+            Route::get('/filtros','filtros')->name('admin.filtro');
             Route::post('/usuario/store','usuarioStore')->name('admin.usuario.store');
             Route::get('/usuario/edit/{id}','usuarioEdit')->name('admin.usuario.edit');
             Route::post('/usuario/update/{id}','usuarioUpdate')->name('admin.usuario.update');
+            Route::post('/filtro/store','filtroStore')->name('admin.filtro.store');
+            Route::get('/filtro/edit/{id}','filtroEdit')->name('admin.filtro.edit');
+            Route::post('/filtro/update/{id}','filtroUpdate')->name('admin.filtro.update');
         });
     });
 

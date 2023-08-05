@@ -37,7 +37,7 @@
                                 <th scope="col">#</th>
                                 <th scope="col">Nombre</th>
                                 <th scope="col">Correo</th>
-                                <th scope="col">Telefono</th>
+                                <th scope="col">Estado</th>
                                 <th scope="col">Acciones</th>
                             </tr>
                             </thead>
@@ -47,7 +47,7 @@
                                     <th scope="row">{{$key+1}}</th>
                                     <td>{{$usuario->name}}</td>
                                     <td>{{$usuario->email}}</td>
-                                    <td>{{$usuario->state}}</td>
+                                    <td><span class="rounded-3 p-1 bg-{{Util::estadoColor($usuario->state)}} text-white">{{Util::estadoTexto($usuario->state)}}</span></td>
                                     <td>
                                         <button type="button" data-bs-target="#modalDatos" data-bs-toggle="modal" class="btn btn-m text-primary btnEditar" data-id="{{$usuario->id}}"><i class="bi bi-pencil-square"></i></button>
                                     </td>

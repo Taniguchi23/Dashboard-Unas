@@ -56,19 +56,20 @@ class AdminController extends Controller
     }
     public function filtros(){
         $filtros = Filtro::where('estado','A')->orderBy('orden')->get();
-        return view('admin.filtros',compact('filtros'));
+        return view('admin.filtro',compact('filtros'));
     }
 
     public function filtroStore(Request $request){
+      //  $orden = Filtro::max('orden');
         $filtro = new Filtro;
-        $filtro->nombre = $request->name;
-        $filtro->orden =  $request->email;
-        $filtro->estado =  $request->estado;
+        $filtro->nombre = $request->nombre;
+        $filtro->orden =  $request->orden;
         $filtro->save();
         return redirect()->route('admin.filtro');
     }
 
     public function filtroEdit($id){
+
         $filtro = Filtro::find($id);
         $datos = [
             'nombre' => $filtro->nombre,
@@ -82,8 +83,8 @@ class AdminController extends Controller
 
     public function filtroUpdate(Request  $request, $id){
         $filtro = Filtro::find($id);
-        $filtro->nombre = $request->name;
-        $filtro->orden =  $request->email;
+        $filtro->nombre = $request->nombre;
+        $filtro->orden =  $request->orden;
         $filtro->estado =  $request->estado;
         $filtro->save();
         return redirect()->route('admin.filtro');
