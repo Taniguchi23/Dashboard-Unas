@@ -30,7 +30,7 @@
                             <label class="col-sm-2 col-form-label">Filtro</label>
                             <div class="col-sm-3">
                                 <select class="form-select" aria-label="Default select example" name="filtro">
-                                    <option value="CISCO" {{$filtro == "CISCO" ? 'selected' : '' }}>CISCO</option>
+                                    <option value="CISCO" {{$filtro == "CISCO" ? 'selected' : '' }}>CISCO <i class="fa-solid fa-trash"></i></option>
                                     <option value="Microsoft" {{$filtro == "Microsoft" ? 'selected' : '' }}>Microsoft</option>
                                     <option value="Apache" {{$filtro == "Apache" ? 'selected' : '' }}>Apache</option>
                                     <option value="PHP" {{$filtro == "PHP" ? 'selected' : '' }}>PHP</option>

@@ -137,7 +137,7 @@ class DashController extends Controller
                 }
 
             }else{
-                $correoAlternativo = 'vieradelaguila@gmail.com';
+                $correoAlternativo = 'sonnytaniguchilock2@gmail.com';
                 $vistaDatos = 'email.errorEmail';
                 $asunto = 'Reporte de vulnerabilidad';
                 $remitente = 'Giusseppe Viera';
@@ -149,7 +149,7 @@ class DashController extends Controller
         } catch (\Exception $e) {
             // Manejar el error, por ejemplo, registrar en el registro de errores
             // o enviar un correo electrónico al administrador informando del problema.
-            $correoAlternativo = 'vieradelaguila@gmail.com';
+            $correoAlternativo = 'sonnytaniguchilock2@gmail.com';
             $vistaDatos = 'email.errorEmail';
             $asunto = 'Reporte de vulnerabilidad';
             $remitente = 'Giusseppe Viera';
