@@ -9,7 +9,7 @@
         <h1>Vulnerabilidades</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{route('index')}}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{{route('home')}}">Inicio</a></li>
 
                 <li class="breadcrumb-item active">Vulnerabilidades</li>
             </ol>

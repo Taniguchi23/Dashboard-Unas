@@ -31,12 +31,6 @@
     <link href="/assets/css/style.css" rel="stylesheet">
 @yield('link')
 
-    <!-- =======================================================
-    * Template Name: NiceAdmin - v2.2.2
-    * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-    * Author: BootstrapMade.com
-    * License: https://bootstrapmade.com/license/
-    ======================================================== -->
 </head>
 
 <body>
@@ -67,7 +61,7 @@
             <li class="nav-item dropdown pe-3">
 
                 <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-                    <img src="assets/img/logoresegti.jpeg" alt="Profile" class="rounded-circle">
+                    <img src="/assets/img/logoresegti.jpeg" alt="Profile" class="rounded-circle">
                     <span class="d-none d-md-block dropdown-toggle ps-2">{{Auth::user()->name}}</span>
                 </a><!-- End Profile Iamge Icon -->
 
@@ -116,17 +110,17 @@
             </a>
             <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
-                    <a href="icons-bootstrap.html" class="text-success">
+                    <a href="{{route('admin.lista','usuarios')}}" class="text-success">
                         <i class="bi bi-circle"></i><span>Usuarios</span>
                     </a>
                 </li>
                 <li>
-                    <a href="icons-remix.html" class="text-success">
+                    <a href="{{route('admin.lista','administradores')}}" class="text-success">
                         <i class="bi bi-circle"></i><span>Administradores</span>
                     </a>
                 </li>
                 <li>
-                    <a href="icons-boxicons.html" class="text-success">
+                    <a href="{{route('admin.filtro')}}" class="text-success">
                         <i class="bi bi-circle"></i><span>Filtros</span>
                     </a>
                 </li>
@@ -176,18 +170,18 @@
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
 <!-- Vendor JS Files -->
-<script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
-<script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="assets/vendor/chart.js/chart.min.js"></script>
-<script src="assets/vendor/echarts/echarts.min.js"></script>
-<script src="assets/vendor/quill/quill.min.js"></script>
-<script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
-<script src="assets/vendor/tinymce/tinymce.min.js"></script>
-<script src="assets/vendor/php-email-form/validate.js"></script>
+<script src="/assets/vendor/apexcharts/apexcharts.min.js"></script>
+<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/vendor/chart.js/chart.min.js"></script>
+<script src="/assets/vendor/echarts/echarts.min.js"></script>
+<script src="/assets/vendor/quill/quill.min.js"></script>
+<script src="/assets/vendor/simple-datatables/simple-datatables.js"></script>
+<script src="/assets/vendor/tinymce/tinymce.min.js"></script>
+<script src="/assets/vendor/php-email-form/validate.js"></script>
 
 <!-- Template Main JS File -->
-<script src="assets/js/main.js"></script>
-<script src="assets/js/jquery-3.7.0.min.js"></script>
+<script src="/assets/js/main.js"></script>
+<script src="/assets/js/jquery-3.7.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 @yield('script')
 
