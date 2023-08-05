@@ -45,18 +45,13 @@
 <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-        <a href="{{route('index')}}" class="logo d-flex align-items-center">
+        <a href="{{route('home')}}" class="logo d-flex align-items-center">
             <img src="/assets/img/logounas.png" alt=""> Vulnerability System
         </a>
         <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
 
-    <!--div class="search-bar">
-        <form class="search-form d-flex align-items-center" method="POST" action="#">
-            <input type="text" name="query" placeholder="--" title="Enter search keyword">
-            <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-        </form>
-    </div--><!-- End Search Bar -->
+
 
     <nav class="header-nav ms-auto">
         <ul class="d-flex align-items-center">
@@ -86,25 +81,7 @@
                         <hr class="dropdown-divider">
                     </li>
 
-                    <!--li>
-                        <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                            <i class="bi bi-person"></i>
-                            <span>Mi perfil</span>
-                        </a>
-                    </li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
 
-                    <li>
-                        <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                            <i class="bi bi-gear"></i>
-                            <span>Configuración</span>
-                        </a>
-                    </li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li-->
 
                     <li>
                         <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
@@ -116,12 +93,6 @@
                         <hr class="dropdown-divider">
                     </li>
 
-                    <!--li>
-                        <a class="dropdown-item d-flex align-items-center" href="/">
-                            <i class="bi bi-box-arrow-right"></i>
-                            <span>Cerrar sesión</span>
-                        </a>
-                    </li-->
 
                 </ul><!-- End Profile Dropdown Items -->
             </li><!-- End Profile Nav -->
@@ -135,11 +106,35 @@
 <aside id="sidebar" class="sidebar">
     <ul class="sidebar-nav " id="sidebar-nav">
         <li class="nav-item">
-            <a class="nav-link collapsed text-success" href="{{route('index')}}">
+            <a class="nav-link collapsed text-success" href="{{route('home')}}">
                 <i class="bi bi-grid"></i>
                 <span>Inicio</span>
             </a>
         </li><!-- End Dashboard Nav -->
+        <li class="nav-item">
+            <a class="nav-link collapsed text-success" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-person"></i><span>Configuraciones</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="icons-bootstrap.html" class="text-success">
+                        <i class="bi bi-circle"></i><span>Usuarios</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="icons-remix.html" class="text-success">
+                        <i class="bi bi-circle"></i><span>Administradores</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="icons-boxicons.html" class="text-success">
+                        <i class="bi bi-circle"></i><span>Filtros</span>
+                    </a>
+                </li>
+            </ul>
+        </li><!-- End Icons Nav -->
+
+
         <li class="nav-item">
             <a class="nav-link collapsed text-success"  href="{{route('web.vulnerabilidades')}}">
                 <i class="bi bi-menu-button-wide"></i><span>Vulnerabilidades</span>
