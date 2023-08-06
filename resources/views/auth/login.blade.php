@@ -58,6 +58,21 @@
                                 <span class="d-none d-lg-block">RESEGTI</span>
                             </a>
                         </div><!-- End Logo -->
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        {{ $error }}
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+                        @if (session('error'))
+                            <div class="alert alert-warning bg-warning text-light border-0 alert-dismissible fade show" role="alert">
+                                {{session('error')}}
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        @endif
 
                         <div class="card mb-3">
 

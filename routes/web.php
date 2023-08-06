@@ -11,7 +11,7 @@ Route::get('/',function (){
 
 Auth::routes();
 
-Route::group(['middleware'=> 'auth'],function (){
+Route::group(['middleware' => ['auth', 'user.status']],function (){
 
     Route::group(['prefix'=>'admin','middleware'=>'isAdmin'], function (){
         Route::controller(AdminController::class)->group(function (){
