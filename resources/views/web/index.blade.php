@@ -14,6 +14,8 @@
                     <script>
                         document.addEventListener("DOMContentLoaded", () => {
                             let cv3 = {!! $cveTres!!};
+                            let datosPorCategoria = {!! $datosPorCategoria3 !!};
+
                             echarts.init(document.querySelector("#pieChart")).setOption({
                                 title: {
                                     text: 'Puntaje',
@@ -21,7 +23,26 @@
                                     left: 'center'
                                 },
                                 tooltip: {
-                                    trigger: 'item'
+                                    trigger: 'item',
+                                    formatter: function(params) {
+                                        let nombreCategoria = params.name;
+                                        let valorCategoria = params.value;
+                                        let detalles = datosPorCategoria[nombreCategoria];
+
+                                        let tooltipContent = `${nombreCategoria}: ${valorCategoria}\n`;
+
+                                        if (detalles && detalles.length > 0) {
+                                            tooltipContent += "<br><br><b>Detalles:</b><br>";
+                                            detalles.forEach(detalle => {
+
+                                                tooltipContent += `${detalle.nombre}: ${detalle.valor}<br>`;
+                                            });
+                                        } else {
+                                            tooltipContent += "No hay detalles disponibles";
+                                        }
+
+                                        return tooltipContent;
+                                    }
                                 },
                                 legend: {
                                     orient: 'vertical',
@@ -35,28 +56,28 @@
                                         value: cv3[0],
                                         name: 'CRITICAL',
                                         itemStyle: {
-                                            color: '#000000' // Cambia el color para la sección CRITICAL
+                                            color: '#000000'
                                         }
                                     },
                                         {
                                             value: cv3[1],
                                             name: 'HIGH',
                                             itemStyle: {
-                                                color: '#e30a0a' // Cambia el color para la sección CRITICAL
+                                                color: '#e30a0a'
                                             }
                                         },
                                         {
                                             value: cv3[2],
                                             name: 'MEDIUM',
                                             itemStyle: {
-                                                color: '#fff200' // Cambia el color para la sección CRITICAL
+                                                color: '#fff200'
                                             }
                                         },
                                         {
                                             value: cv3[3],
                                             name: 'LOW',
                                             itemStyle: {
-                                                color: '#605c5c' // Cambia el color para la sección CRITICAL
+                                                color: '#605c5c'
                                             }
                                         }
                                     ],
@@ -87,6 +108,8 @@
                     <script>
                         document.addEventListener("DOMContentLoaded", () => {
                             let cv2 = {!! $cveDos !!};
+                            let datosPorCategoria = {!! $datosPorCategoria2 !!};
+                            console.log(datosPorCategoria)
                             echarts.init(document.querySelector("#pieChart2")).setOption({
                                 title: {
                                     text: 'Puntaje',
@@ -94,7 +117,26 @@
                                     left: 'center'
                                 },
                                 tooltip: {
-                                    trigger: 'item'
+                                    trigger: 'item',
+                                    formatter: function(params) {
+                                        let nombreCategoria = params.name;
+                                        let valorCategoria = params.value;
+                                        let detalles = datosPorCategoria[nombreCategoria];
+
+                                        let tooltipContent = `${nombreCategoria}: ${valorCategoria}\n`;
+
+                                        if (detalles && detalles.length > 0) {
+                                            tooltipContent += "<br><br><b>Detalles:</b><br>";
+                                            detalles.forEach(detalle => {
+
+                                                tooltipContent += `${detalle.nombre}: ${detalle.valor}<br>`;
+                                            });
+                                        } else {
+                                            tooltipContent += "No hay detalles disponibles";
+                                        }
+
+                                        return tooltipContent;
+                                    }
                                 },
                                 legend: {
                                     orient: 'vertical',
@@ -251,7 +293,7 @@
                     document.addEventListener("DOMContentLoaded", () => {
                         let nombreFiltros = {!! json_encode($arregloFiltros) !!};
                         let resultadoFiltros = {!! json_encode($resultadoFiltros) !!};
-                        console.log(resultadoFiltros);
+
                         echarts.init(document.querySelector("#barChart")).setOption({
                             xAxis: {
                                 type: 'category',
@@ -303,8 +345,8 @@
                     <td>{{$cve->metrics->isNotEmpty() ?  $cve->metrics->first()->cvssData_version : '#' }}</td>
                     <td class="{{$cve->metrics->isNotEmpty() ? (Util::valorColor( $cve->metrics->first()->cvssData_baseScore)) :'text-secondary'}}">
                         <label class="btn {{$cve->metrics->isNotEmpty() ? (Util::valorColorButton( $cve->metrics->first()->cvssData_baseScore)) :'btn-secondary'}}">
-                            {{$cve->metrics->isNotEmpty() ?  $cve->metrics->first()->cvssData_baseScore :''}}
                             {{$cve->metrics->isNotEmpty() ? (Util::valorTexto( $cve->metrics->first()->cvssData_baseScore)) :'Unknown'}}
+                            {{$cve->metrics->isNotEmpty() ?  $cve->metrics->first()->cvssData_baseScore :''}}
                         </label>
 
                     </td>
@@ -336,7 +378,6 @@
 
         $('#filtro').change(function () {
             const opcionSeleccionada = $(this).val();
-            console.log(opcionSeleccionada);
             $('#BtnBuscarFiltro').attr('href','/home?filtro='+opcionSeleccionada)
         });
     </script>

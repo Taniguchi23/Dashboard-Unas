@@ -39,6 +39,7 @@ Route::group(['middleware'=> 'auth'],function (){
 
         Route::post('/service/suscribirse','suscribirse');
         Route::get('/service/vulnerabilidad/{id}','vulnerabilidad');
+        Route::get('/service/verificarEmail/{email}','verificarEmail');
     });
 });
 

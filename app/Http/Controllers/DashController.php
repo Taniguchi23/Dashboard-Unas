@@ -15,6 +15,7 @@ use App\Models\User;
 use App\Models\Weakdescription;
 use App\Models\Weakne;
 use Mail;
+use Response;
 use App\Mail\ReporteEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -465,5 +466,21 @@ class DashController extends Controller
         ];
 
         return response()->json($datos);
+    }
+
+    public function verificarEmail($email){
+         $user = User::where('email',$email)->first();
+         if ($user){
+             $response = 'ok';
+             $id = $user->id;
+         }else{
+             $response = 'error';
+             $id = 0;
+         }
+         $datos = [
+             'response' => $response,
+             'id' => $id,
+         ];
+         return response::json($datos);
     }
 }

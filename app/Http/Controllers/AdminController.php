@@ -26,8 +26,9 @@ class AdminController extends Controller
         $user->email =  $request->email;
         $user->password = Hash::make($request->password);
         $user->rol = substr($request->rol,0,1) == 'u'? 'U': 'A';
+
         $user->save();
-        return redirect()->route('admin.lista',['tipo'=> $request->rol]);
+        return redirect()->route('admin.lista',['tipo'=> $request->rol])->with('mensaje', '¡Se ha creado un '.$request->rol.'!');
     }
 
     public function usuarioEdit($id){
@@ -52,7 +53,7 @@ class AdminController extends Controller
         $user->state = $request->estado;
         $rol = $user->rol== 'U'? 'usuarios': 'administradores';
         $user->save();
-        return redirect()->route('admin.lista',['tipo'=> $rol]);
+        return redirect()->route('admin.lista',['tipo'=> $rol])->with('mensaje', '¡Se ha actulizado un '.$rol.'!');
     }
     public function filtros(){
         $filtros = Filtro::where('estado','A')->orderBy('orden')->get();
@@ -60,12 +61,18 @@ class AdminController extends Controller
     }
 
     public function filtroStore(Request $request){
-      //  $orden = Filtro::max('orden');
+        $verificarOrden = Filtro::where('orden', $request->orden)->where('estado','A')->first();
         $filtro = new Filtro;
         $filtro->nombre = $request->nombre;
-        $filtro->orden =  $request->orden;
+        if (!$verificarOrden){
+            $filtro->orden =  $request->orden;
+        }else{
+            $orden = $verificarOrden->max('orden');
+            $filtro->orden =  $orden + 1;
+        }
         $filtro->save();
-        return redirect()->route('admin.filtro');
+
+        return redirect()->route('admin.filtro')->with('mensaje', '¡Se ha creado un filtro!');
     }
 
     public function filtroEdit($id){
@@ -83,10 +90,23 @@ class AdminController extends Controller
 
     public function filtroUpdate(Request  $request, $id){
         $filtro = Filtro::find($id);
+        $verificarOrden = Filtro::where('orden', $request->orden)
+            ->where('estado', 'A')
+            ->where('id', '!=', $filtro->id)
+            ->first();
+
+        if ($verificarOrden){
+            $verificarOrden->orden = $filtro->orden;
+            $filtro->orden = $request->orden;
+            $verificarOrden->save();
+        }
+
         $filtro->nombre = $request->nombre;
-        $filtro->orden =  $request->orden;
-        $filtro->estado =  $request->estado;
+        $filtro->estado = $request->estado;
         $filtro->save();
-        return redirect()->route('admin.filtro');
+        return redirect()->route('admin.filtro')->with('mensaje', '¡Se ha actualizado un filtro!');
     }
+
+
+
 }

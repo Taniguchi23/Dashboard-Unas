@@ -11,6 +11,15 @@
         </nav>
     </div><!-- End Page Title -->
 
+    <div class="col-lg-6">
+        @if (session('mensaje'))
+                <div class="alert alert-success bg-success text-light border-0 alert-dismissible fade show" role="alert">
+                    {{session('mensaje')}}
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+        @endif
+    </div>
+
     <section class="section">
         <div class="row">
             <div class="col-lg-12">
@@ -84,7 +93,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <label for="validationDefault01" class="form-label">Orden</label>
-                                    <input type="number" class="form-control" id="orden"  name="orden" value="" required>
+                                    <input type="number" class="form-control" id="orden"  name="orden" value="" required min="1">
                                 </div>
 
                                 <div id="divEstado" class="col-md-6" style="display: none">

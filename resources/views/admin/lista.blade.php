@@ -10,6 +10,14 @@
             </ol>
         </nav>
     </div><!-- End Page Title -->
+    <div class="col-lg-6">
+        @if (session('mensaje'))
+            <div class="alert alert-success bg-success text-light border-0 alert-dismissible fade show" role="alert">
+                {{session('mensaje')}}
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+    </div>
 
     <section class="section">
         <div class="row">
@@ -106,7 +114,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-primary btnGuardar">Guardar</button>
+                        <button type="submit" class="btn btn-primary btnGuardar" >Guardar</button>
                     </div>
                 </form>
             </div>
@@ -116,13 +124,13 @@
 @endsection
 @section('script')
     <script type="text/javascript">
-
+        var valor_id = -1;
         $('#tabla').on('click','.btnEditar',function (){
             let val_id = $(this).data('id');
+            valor_id = val_id;
             let val_url = '/admin/usuario/edit/'+val_id;
             let val_url_update = '/admin/usuario/update/'+val_id;
             $.get(val_url, function (res){
-                console.log(res)
                 $('#formulario').attr('action',val_url_update);
                 $('#modalTitulo').html('Editar Usuario');
                 $('#name').val(res.name);
@@ -130,7 +138,7 @@
                 $('#divEstado').css('display','block');
                 $('#estado').val(res.state);
                 $('#password').attr('required',false);
-                $('.btnGuardar').html('Editar');
+                $('.btnGuardar').html('Editar').prop('disabled',false);
                 $('#modalDatos').modal('show');
             });
         });
@@ -146,8 +154,27 @@
             $('#divEstado').css('display','none');
             $('#password').attr('required',true);
             $('#rol').val(val_tipo);
-            $('.btnGuardar').html('Guardar');
+            $('.btnGuardar').html('Guardar').prop('disabled',true);
             $('#modalDatos').modal('show');
+        });
+
+        $('#email').keyup(function (){
+
+            let email = $(this).val();
+            let url = `/service/verificarEmail/${email}`
+            $.get(url, function (response) {
+                console.log(response)
+                if (response.response == 'error'){
+                    $('.btnGuardar').prop('disabled',false);
+                }else {
+                    $('.btnGuardar').prop('disabled',true);
+                    if (valor_id == response.id){
+                        $('.btnGuardar').prop('disabled',false);
+                    }
+
+                }
+
+            });
         });
     </script>
 @endsection
