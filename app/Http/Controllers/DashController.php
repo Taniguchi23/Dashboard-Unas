@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Util;
 use App\Models\Cve;
 use App\Models\Cvsdo;
 use App\Models\Cvstre;
 use App\Models\Description;
 use App\Models\Email;
+use App\Models\Filtro;
 use App\Models\Metric;
 use App\Models\Reference;
+use App\Models\User;
 use App\Models\Weakdescription;
 use App\Models\Weakne;
 use Mail;
@@ -18,8 +21,6 @@ use Illuminate\Support\Facades\Http;
 
 class DashController extends Controller
 {
-
-
     public function consulta()
     {
         try {
@@ -35,6 +36,7 @@ class DashController extends Controller
             $data = $response->json();
            // dd($data);
 
+            $listaFiltros = Filtro::where('estado','A')->orderBy('orden')->get();
 
             if (!empty($data['vulnerabilities'])) {
                 $listaVulnerabilidades = [];
@@ -56,14 +58,25 @@ class DashController extends Controller
                         $descriptionObject->value = $descripcion['value'];
                         $descriptionObject->save();
                     }
-                    $listaVulnerabilidades[] = [
-                        'id' => $cveObject->codigo,
-                        'descripcion' => $descripciones[0]['value']
-                    ];
+                    if (!empty($cve['metrics']) && Util::esCritico($cve['metrics']['cvssData_baseScore'])){
+                        $encontrada = false;
+                        foreach ($listaFiltros as $palabra) {
+                            if (strpos($descripciones[0]['value'], $palabra->nombre) !== false) {
+                                $encontrada = true;
+                                break;
+                            }
+                        }
+
+                        if ($encontrada) {
+                            $listaVulnerabilidades[] = [
+                                'id' => $cveObject->codigo,
+                                'descripcion' => $descripciones[0]['value']
+                            ];
+                        }
+                    }
 
                     $metricas = $cve['metrics'];
                     foreach ($metricas as $index => $metrica){
-
                         $versionCadena =  $metrica[0]['cvssData']['version'];
                         $arregloVersion = explode('.',$versionCadena);
                         $version = $arregloVersion[0];
@@ -92,7 +105,6 @@ class DashController extends Controller
                         $metric->exploitabilityScore = $metrica[0]['exploitabilityScore'];
                         $metric->impactScore = $metrica[0]['impactScore'];
                         $metric->save();
-
                     }
                     if (isset($cve['weaknesses'])){
                         $weaknes = $cve['weaknesses'];
@@ -102,7 +114,6 @@ class DashController extends Controller
                             $weakneObject->source = $weakne['source'];
                             $weakneObject->type = $weakne['type'];
                             $weakneObject->save();
-
                             $weaknedescriptions = $weakne['description'];
                             foreach ($weaknedescriptions as $weaknedescription){
                                 $weaknedescriptionObject = new Weakdescription;
@@ -113,8 +124,6 @@ class DashController extends Controller
                             }
                         }
                     }
-
-
                     $references = $cve['references'];
                     foreach ($references as $reference){
                         $referenceObject = new Reference;
@@ -124,20 +133,20 @@ class DashController extends Controller
                         $referenceObject->save();
                     }
                 }
-                $vistaDatos = 'email.reporte';
-                $asunto = 'Reporte de vulnerabilidad';
-                $remitente = 'Giusseppe Viera';
-                $email = [
-                    'listas' => $listaVulnerabilidades,
-                ];
-
-                $usuarios = Email::where('estado', 'A')->get();
-                foreach ($usuarios as $usuario){
-                    Mail::to($usuario->email)->send(new ReporteEmail($email, $vistaDatos, $asunto, $remitente));
+                if (empty($listaVulnerabilidades)){
+                    $vistaDatos = 'email.reporte';
+                    $asunto = 'Reporte de vulnerabilidad';
+                    $remitente = 'Giusseppe Viera';
+                    $email = [
+                        'listas' => $listaVulnerabilidades,
+                    ];
+                    $usuarios = User::where('state', 'A')->get();
+                    foreach ($usuarios as $usuario){
+                        Mail::to($usuario->email)->send(new ReporteEmail($email, $vistaDatos, $asunto, $remitente));
+                    }
                 }
-
             }else{
-                $correoAlternativo = 'sonnytaniguchilock2@gmail.com';
+                $correoAlternativo = 'giusseppeviera@hotmail.com';
                 $vistaDatos = 'email.errorEmail';
                 $asunto = 'Reporte de vulnerabilidad';
                 $remitente = 'Giusseppe Viera';
@@ -149,7 +158,7 @@ class DashController extends Controller
         } catch (\Exception $e) {
             // Manejar el error, por ejemplo, registrar en el registro de errores
             // o enviar un correo electrónico al administrador informando del problema.
-            $correoAlternativo = 'sonnytaniguchilock2@gmail.com';
+            $correoAlternativo = 'giusseppeviera@hotmail.com';
             $vistaDatos = 'email.errorEmail';
             $asunto = 'Reporte de vulnerabilidad';
             $remitente = 'Giusseppe Viera';
@@ -159,6 +168,55 @@ class DashController extends Controller
             Mail::to($correoAlternativo)->send(new ReporteEmail($email, $vistaDatos, $asunto, $remitente));
             dd($e->getMessage());
         }
+    }
+
+    public function domingo(){
+        $today = date('Y-m-d');
+        $lastWeek = date('Y-m-d', strtotime('-27 days'));
+
+        $cves = CVE::whereBetween('published', [$lastWeek, $today])->get();
+        $listaFiltros = Filtro::where('estado','A')->orderBy('orden')->pluck('nombre')->toArray();
+        //dd($listaFiltros);
+        $resultados = [];
+        foreach ($cves as $cve){
+             if ($cve->descriptions->isNotEmpty()){
+                 foreach ($listaFiltros as $key => $filtro){
+                     if (strpos($cve->descriptions[0]['value'], $filtro)){
+                         $resultados[$key][] = [
+                            'codigo' =>    $cve->codigo,
+                            'descripcion' =>   $cve->descriptions[0]['value'],
+                         ];
+                     }
+                 }
+             }
+        }
+
+        $vistaDatos = 'email.reporteDominical';
+        $asunto = 'Reporte de vulnerabilidad';
+        $remitente = 'Giusseppe Viera';
+        $email = [
+            'listasFiltros' => $listaFiltros,
+            'resultados' => $resultados
+        ];
+        $prueba = $email['listasFiltros'];
+        $prueba2 = $email['resultados'];
+
+        /*foreach ($prueba as $k => $p){
+            if (isset($prueba2[$k])){
+                foreach ($prueba2[$k] as $lista){
+                    $r = $lista['codigo'];
+                    var_dump($r);
+                }
+            }
+
+        }
+        dd($email);*/
+        $usuarios = User::where('state', 'A')->get();
+        foreach ($usuarios as $usuario){
+            Mail::to($usuario->email)->send(new ReporteEmail($email, $vistaDatos, $asunto, $remitente));
+        }
+
+
     }
 
     public function suscribirse(Request $request){

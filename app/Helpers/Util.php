@@ -110,4 +110,8 @@ class Util
         $meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'setiembre', 'octubre', 'noviembre', 'diciembre'];
         return $meses[$mes-1];
     }
+
+    static function esCritico($valor){
+        return $valor> 9 ? true :  false;
+    }
 }

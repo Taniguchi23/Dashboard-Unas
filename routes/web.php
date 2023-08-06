@@ -45,6 +45,7 @@ Route::group(['middleware'=> 'auth'],function (){
 
 Route::controller(DashController::class)->group(function (){
     Route::get('/service/consulta','consulta');
+    Route::get('/service/consultaDominical','domingo');
 });
 
 
