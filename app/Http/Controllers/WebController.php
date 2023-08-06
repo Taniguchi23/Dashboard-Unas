@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cve;
+use App\Models\Description;
+use App\Models\Filtro;
 use App\Models\Metric;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -66,13 +68,45 @@ class WebController extends Controller
             }
         }
 
-        $cves = Cve::orderByDesc('published')->take(20)->get();
+        $cvesUltimos = Cve::orderByDesc('published')->take(20)->get();
+
+
+        $filtro = 'CISCO';
+        $cves = Cve::whereHas('descriptions', function ($query) use ($filtro) {
+            $query->where('value','like', '%'.$filtro.'%');
+        })->orderByDesc('published')->get();
+
+        $listaFiltros = Filtro::where('estado','A')->orderBy('orden')->get();
+        $arregloFiltros = Filtro::where('estado','A')->orderBy('orden')->pluck('nombre')->toArray();
+
+        $fechaActual = date('Y-m-d');
+        $mesAnterior = date('m', strtotime('-1 month', strtotime($fechaActual)));
+
+        $resultados = [];
+        foreach ($arregloFiltros as  $filtro){
+            $cantidadEncontrada = Description::where('value', 'LIKE', '%'.$filtro.'%')->count();
+            //dd($cantidadEncontrada);
+            $resultados[]=$cantidadEncontrada;
+        }
+
+
+
 
         $datos = [
             'cveDos' =>  json_encode($cveDos),
             'cveTres' => json_encode($cveTres),
+            'listaFiltros' => $listaFiltros,
             'cves' => $cves,
+            'cvesUltimos' => $cvesUltimos,
+            'filtro' => $filtro,
+            'ultimoMes' => $mesAnterior,
+             'arregloFiltros' => $arregloFiltros,
+            'resultadoFiltros' => $resultados,
+
         ];
+
+
+
         return view('web.index', $datos);
     }
 

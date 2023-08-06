@@ -105,4 +105,9 @@ class Util
     static function estadoTexto($estado){
         return $estado == 'A' ? 'Activo' : 'Inactivo';
     }
+
+    static function nombreMes($mes){
+        $meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'setiembre', 'octubre', 'noviembre', 'diciembre'];
+        return $meses[$mes+1];
+    }
 }

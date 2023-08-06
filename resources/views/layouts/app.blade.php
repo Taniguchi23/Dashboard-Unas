@@ -26,6 +26,8 @@
     <link href="/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
     <link href="/assets/vendor/simple-datatables/style.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
 
     <!-- Template Main CSS File -->
     <link href="/assets/css/style.css" rel="stylesheet">
@@ -40,7 +42,7 @@
 
     <div class="d-flex align-items-center justify-content-between">
         <a href="{{route('home')}}" class="logo d-flex align-items-center">
-            <img src="/assets/img/logounas.png" alt=""> Vulnerability System
+            <img src="/assets/img/logounas.png" alt=""> SISTEMA DE VULNERABILIDADES
         </a>
         <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
@@ -73,15 +75,24 @@
                     <li>
                         <hr class="dropdown-divider">
                     </li>
-
-
-
                     <li>
+                        <a class="dropdown-item d-flex align-items-center" href="{{route('logout')}}" onclick="event.preventDefault();
+                        document.getElementById('logout-form').submit();">
+                            <i class="bi bi-box-arrow-right"></i>
+                            <span>Cerrar sesión</span>
+                        </a>
+                        <form id="logout-form" action="{{route('logout')}}" method="post" style="display: none">
+                            @csrf
+                        </form>
+                    </li>
+
+
+                    <!--li>
                         <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
                             <i class="bi bi-question-circle"></i>
                             <span>¿Necesitas ayuda?</span>
                         </a>
-                    </li>
+                    </li-->
                     <li>
                         <hr class="dropdown-divider">
                     </li>
@@ -104,6 +115,7 @@
                 <span>Inicio</span>
             </a>
         </li><!-- End Dashboard Nav -->
+        @if(Auth::user()->rol == 'A' || Auth::user()->rol == 'S')
         <li class="nav-item">
             <a class="nav-link collapsed text-success" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-person"></i><span>Configuraciones</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -126,24 +138,25 @@
                 </li>
             </ul>
         </li><!-- End Icons Nav -->
+        @endif
 
 
+
+        <!--li class="nav-item">
+            <a class="nav-link collapsed text-success"  href="{{route('web.notificacion')}}">
+                <i class="bi bi-journal-text"></i><span>Notificación y Alertas</span>
+            </a>
+        </li--><!-- End Forms Nav -->
+        <!--li class="nav-item">
+            <a class="nav-link collapsed text-success"  href="{{route('web.personalizacion')}}">
+                <i class="bi bi-journal-text"></i><span>Personalizacion y Configuracion</span>
+            </a>
+        </li--><!-- End Forms Nav -->
         <li class="nav-item">
             <a class="nav-link collapsed text-success"  href="{{route('web.vulnerabilidades')}}">
                 <i class="bi bi-menu-button-wide"></i><span>Vulnerabilidades</span>
             </a>
         </li><!-- End Components Nav -->
-
-        <li class="nav-item">
-            <a class="nav-link collapsed text-success"  href="{{route('web.notificacion')}}">
-                <i class="bi bi-journal-text"></i><span>Notificación y Alertas</span>
-            </a>
-        </li><!-- End Forms Nav -->
-        <li class="nav-item">
-            <a class="nav-link collapsed text-success"  href="{{route('web.personalizacion')}}">
-                <i class="bi bi-journal-text"></i><span>Personalizacion y Configuracion</span>
-            </a>
-        </li><!-- End Forms Nav -->
     </ul>
 </aside><!-- End Sidebar-->
 

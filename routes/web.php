@@ -13,7 +13,7 @@ Auth::routes();
 
 Route::group(['middleware'=> 'auth'],function (){
 
-    Route::group(['prefix'=>'admin','middleware'=>'auth'], function (){
+    Route::group(['prefix'=>'admin','middleware'=>'isAdmin'], function (){
         Route::controller(AdminController::class)->group(function (){
             Route::get('/lista/{tipo}','lista')->name('admin.lista');
             Route::get('/filtros','filtros')->name('admin.filtro');
@@ -36,14 +36,16 @@ Route::group(['middleware'=> 'auth'],function (){
     });
 
     Route::controller(DashController::class)->group(function (){
-        Route::get('/service/consulta','consulta');
+
         Route::post('/service/suscribirse','suscribirse');
         Route::get('/service/vulnerabilidad/{id}','vulnerabilidad');
     });
 });
 
 
-
+Route::controller(DashController::class)->group(function (){
+    Route::get('/service/consulta','consulta');
+});
 
 
 
