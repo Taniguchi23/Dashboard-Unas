@@ -159,23 +159,22 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Lista de vulnerabilidades</h5>
-                        <form action="{{route('web.personalizacion.post')}}" method="post">
-                            @csrf
+
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label">Filtro</label>
                                 <div class="col-sm-3">
-                                    <select class="form-select" aria-label="Default select example" name="filtro">
+                                    <select class="form-select" id="filtro" name="filtro">
                                         @foreach($listaFiltros as $listaFiltro)
-                                        <option value="CISCO" {{$filtro == $listaFiltro->nombre ? 'selected' : '' }}>
+                                        <option class="opcionFiltro" value="{{$listaFiltro->nombre}}" {{$filtro == $listaFiltro->nombre ? 'selected' : '' }}>
                                             {{$listaFiltro->nombre}} <i class="fa-solid fa-trash"></i></option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="col-sm-3">
-                                    <button type="submit" class="btn btn-outline-success"> Buscar</button>
+                                    <a href="" class="btn btn-outline-success" id="BtnBuscarFiltro">Buscar</a>
                                 </div>
                             </div>
-                        </form>
+
                         <p></p>
 
                         <!-- Table with stripped rows -->
@@ -333,6 +332,12 @@
                 }
             });
             $('#modalDatos').modal('show');
+        });
+
+        $('#filtro').change(function () {
+            const opcionSeleccionada = $(this).val();
+            console.log(opcionSeleccionada);
+            $('#BtnBuscarFiltro').attr('href','/home?filtro='+opcionSeleccionada)
         });
     </script>
 @endsection

@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class WebController extends Controller
 {
-    public function index(){
+    public function index(Request $request){
 
         $tiposContadosDos = Metric::where('version', 2)
             ->selectRaw('
@@ -70,10 +70,15 @@ class WebController extends Controller
 
         $cvesUltimos = Cve::orderByDesc('published')->take(20)->get();
 
+        if ($request->has('filtro')) {
+            $filtroSelect = $request->input('filtro');
 
-        $filtro = 'CISCO';
-        $cves = Cve::whereHas('descriptions', function ($query) use ($filtro) {
-            $query->where('value','like', '%'.$filtro.'%');
+        } else {
+            $filtroSelect = 'CISCO';
+        }
+
+        $cves = Cve::whereHas('descriptions', function ($query) use ($filtroSelect) {
+            $query->where('value','like', '%'.$filtroSelect.'%');
         })->orderByDesc('published')->get();
 
         $listaFiltros = Filtro::where('estado','A')->orderBy('orden')->get();
@@ -81,12 +86,17 @@ class WebController extends Controller
 
         $fechaActual = date('Y-m-d');
         $mesAnterior = date('m', strtotime('-1 month', strtotime($fechaActual)));
+        $mesAnterior = intval($mesAnterior);
 
         $resultados = [];
         foreach ($arregloFiltros as  $filtro){
-            $cantidadEncontrada = Description::where('value', 'LIKE', '%'.$filtro.'%')->count();
-            //dd($cantidadEncontrada);
-            $resultados[]=$cantidadEncontrada;
+            $resultados[] = DB::table('cves')
+                ->join('descriptions', 'cves.id', '=', 'descriptions.cve_id')
+                ->where('descriptions.value', 'like', '%' . $filtro . '%')
+                ->whereMonth('cves.published', $mesAnterior)
+                ->distinct()
+                ->count('cves.id');
+
         }
 
 
@@ -98,14 +108,14 @@ class WebController extends Controller
             'listaFiltros' => $listaFiltros,
             'cves' => $cves,
             'cvesUltimos' => $cvesUltimos,
-            'filtro' => $filtro,
+            'filtro' => $filtroSelect,
             'ultimoMes' => $mesAnterior,
              'arregloFiltros' => $arregloFiltros,
             'resultadoFiltros' => $resultados,
 
         ];
 
-
+      // dd($datos);
 
         return view('web.index', $datos);
     }

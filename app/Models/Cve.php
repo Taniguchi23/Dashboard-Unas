@@ -10,7 +10,7 @@ class Cve extends Model
     use HasFactory;
 
     public function descriptions(){
-        return $this->hasMany(Description::class);
+        return $this->hasMany(Description::class,'cve_id');
     }
 
     public function metrics(){
