@@ -52,7 +52,7 @@ class FiltroTableSeeder extends Seeder
             ],
             [
                 'nombre' => 'Centos',
-                'orden' => 8,
+                'orden' => 10,
             ],
         ];
         Filtro::insert($filtros);

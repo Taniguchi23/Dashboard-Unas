@@ -23,13 +23,19 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Lista de vulnerabilidades</h5>
+                        <form action="{{route('web.vulnerabilidadesPost')}}" method="post">
+                            @csrf
+                            <input type="text" name="filtro" value="{{ session('filtro') }}">
+                            <button type="submit" class="  btn btn-primary" value=""> Buscar</button>
+                        </form>
+
                         <p></p>
 
                         <!-- Table with stripped rows -->
-                        <table class="table datatable tablaDatos">
+                        <table class="table tablaDatos ">
                             <thead>
                             <tr>
-                                <th scope="col">#</th>
+
                                 <th scope="col">Código</th>
                                 <th scope="col">Fuente</th>
                                 <th scope="col">Impact</th>
@@ -40,7 +46,7 @@
                             <tbody>
                             @foreach($cves as $key => $cve)
                             <tr>
-                                <th scope="row">{{$key + 1}}</th>
+
                                 <td>{{$cve->codigo}}</td>
                                 <td>{{$cve->sourceIdentifier}}</td>
                                 <td class="{{ $cve->metrics->isNotEmpty() ? Util::valorColor( $cve->metrics->first()->cvssData_baseScore) : 'text-secondary' }}">  <i class="fas fa-circle circle-icon " id="bolita"></i> {{ $cve->metrics->isNotEmpty() ? Util::valorTexto( $cve->metrics->first()->cvssData_baseScore) : 'Unknown' }}</td>
@@ -52,7 +58,10 @@
                             </tr>
                             @endforeach
                             </tbody>
+
                         </table>
+
+                        {!! $cves->appends(['filtro' => $filtro])!!}
                         <!-- End Table with stripped rows -->
 
                     </div>
@@ -94,6 +103,7 @@
             let id = $(this).data('id');
             let url = `/service/vulnerabilidad/${id}`;
             $.get(url, function (response){
+                console.log(response)
                 if (response.estado == 'ok'){
                     $('#tituloModal').html('Vulnerabilidad : '+ response.code );
                     $('#accordionFlushExample').html(response.html);

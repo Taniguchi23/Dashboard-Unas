@@ -8,6 +8,7 @@ use App\Models\Filtro;
 use App\Models\Metric;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class WebController extends Controller
 {
@@ -274,11 +275,13 @@ class WebController extends Controller
         $mesAnterior = intval($mesAnterior);
 
         $resultados = [];
+        $anioActual = date('Y');
         foreach ($arregloFiltros as  $filtro){
             $resultados[] = DB::table('cves')
                 ->join('descriptions', 'cves.id', '=', 'descriptions.cve_id')
                 ->where('descriptions.value', 'like', '%' . $filtro . '%')
                 ->whereMonth('cves.published', $mesAnterior)
+                ->whereYear('cves.published', $anioActual)
                 ->distinct()
                 ->count('cves.id');
 
@@ -308,9 +311,26 @@ class WebController extends Controller
         return view('web.index', $datos);
     }
 
-    public function vulnerabilidades(){
-      $cves =  Cve::orderByDesc('published')->get();
-      return view('web.resumen',compact('cves'));
+    public function vulnerabilidades(Request $request){
+
+        //dd(Session::has('filtro'));
+
+        if ($request->input('filtro')!== null  ){
+            $filtro = $request->input('filtro');
+            $cves =  Cve::orderByDesc('published')
+                ->where('codigo', 'LIKE', '%' . $request->input('filtro') . '%')
+                    ->orwhere('sourceIdentifier', 'LIKE', '%' . $request->input('filtro') . '%')
+                    ->orwhere('published', 'LIKE', '%' . $request->input('filtro') . '%')->paginate(10);
+        }else{
+            $cves =  Cve::orderByDesc('published')->paginate(10);
+            $filtro = '';
+        }
+        $datos = [
+            'cves' => $cves,
+            'filtro' =>  $filtro
+        ];
+
+      return view('web.resumen',$datos);
     }
 
     public function notificacion(){

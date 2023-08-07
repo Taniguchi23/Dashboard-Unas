@@ -59,25 +59,44 @@ class DashController extends Controller
                         $descriptionObject->value = $descripcion['value'];
                         $descriptionObject->save();
                     }
-                    if (!empty($cve['metrics']) && Util::esCritico($cve['metrics']['cvssData_baseScore'])){
-                        $encontrada = false;
-                        foreach ($listaFiltros as $palabra) {
-                            if (strpos($descripciones[0]['value'], $palabra->nombre) !== false) {
-                                $encontrada = true;
-                                break;
+
+                  /*  $metricas = $cve['metrics'];
+                    if (!empty($metricas)){
+
+                        $primerClave = key($metricas);
+                        var_dump($primerClave);
+                        dd($primerValor);
+                    }else{
+                        dd("sdsd");
+                    }*/
+                    $temp = $cve['metrics'];
+                    $metricas = $cve['metrics'];
+                    if (!empty($temp)){
+                        $primerValor = reset($temp);
+
+                        if (Util::esCritico($primerValor[0]['cvssData']['baseScore'])){
+                            $encontrada = false;
+                            foreach ($listaFiltros as $palabra) {
+                                if (strpos($descripciones[0]['value'], $palabra->nombre) !== false) {
+                                    $encontrada = true;
+                                    break;
+                                }
+                            }
+                            if ($encontrada) {
+                                $listaVulnerabilidades[] = [
+                                    'id' => $cveObject->codigo,
+                                    'descripcion' => $descripciones[0]['value']
+                                ];
                             }
                         }
 
-                        if ($encontrada) {
-                            $listaVulnerabilidades[] = [
-                                'id' => $cveObject->codigo,
-                                'descripcion' => $descripciones[0]['value']
-                            ];
-                        }
                     }
 
-                    $metricas = $cve['metrics'];
+
+
                     foreach ($metricas as $index => $metrica){
+
+
                         $versionCadena =  $metrica[0]['cvssData']['version'];
                         $arregloVersion = explode('.',$versionCadena);
                         $version = $arregloVersion[0];
@@ -141,7 +160,7 @@ class DashController extends Controller
                     $email = [
                         'listas' => $listaVulnerabilidades,
                     ];
-                    $usuarios = User::where('state', 'A')->get();
+                    $usuarios = User::where('state', 'A')->where('rol','!=','S')->get();
                     foreach ($usuarios as $usuario){
                         Mail::to($usuario->email)->send(new ReporteEmail($email, $vistaDatos, $asunto, $remitente));
                     }
@@ -199,19 +218,7 @@ class DashController extends Controller
             'listasFiltros' => $listaFiltros,
             'resultados' => $resultados
         ];
-        $prueba = $email['listasFiltros'];
-        $prueba2 = $email['resultados'];
 
-        /*foreach ($prueba as $k => $p){
-            if (isset($prueba2[$k])){
-                foreach ($prueba2[$k] as $lista){
-                    $r = $lista['codigo'];
-                    var_dump($r);
-                }
-            }
-
-        }
-        dd($email);*/
         $usuarios = User::where('state', 'A')->get();
         foreach ($usuarios as $usuario){
             Mail::to($usuario->email)->send(new ReporteEmail($email, $vistaDatos, $asunto, $remitente));
