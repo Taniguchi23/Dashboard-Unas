@@ -6,92 +6,93 @@
         <div class="col-lg-6 ">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">CVSS V3 </h5>
+                    <h5 class="card-title">Distribución de vulnerabilidades V3</h5>
 
                     <!-- Pie Chart -->
-                    <div id="pieChart" style="min-height: 400px;" class="echart"></div>
+                    <div id="pieChart" style="min-height: 400px;" class="echart">
+                        <script>
+                                document.addEventListener("DOMContentLoaded", () => {
+                                    let cv3 = {!! json_encode($cveTres) !!};
+                                    let datosPorCategoria3 = {!! json_encode($datosPorCategoria3) !!} ;
 
-                    <script>
-                        document.addEventListener("DOMContentLoaded", () => {
-                            let cv3 = {!! $cveTres!!};
-                            let datosPorCategoria = {!! $datosPorCategoria3 !!};
+                                    echarts.init(document.querySelector("#pieChart")).setOption({
+                                        title: {
+                                            text: 'Puntaje',
+                                            subtext: 'distribución',
+                                            left: 'center'
+                                        },
+                                        tooltip: {
+                                            trigger: 'item',
+                                            formatter: function(params) {
+                                                let nombreCategoria = params.name;
+                                                let valorCategoria = params.value;
+                                                let detalles = datosPorCategoria3[nombreCategoria];
 
-                            echarts.init(document.querySelector("#pieChart")).setOption({
-                                title: {
-                                    text: 'Puntaje',
-                                    subtext: 'distribución',
-                                    left: 'center'
-                                },
-                                tooltip: {
-                                    trigger: 'item',
-                                    formatter: function(params) {
-                                        let nombreCategoria = params.name;
-                                        let valorCategoria = params.value;
-                                        let detalles = datosPorCategoria[nombreCategoria];
+                                                let tooltipContent = `${nombreCategoria}: ${valorCategoria}\n`;
 
-                                        let tooltipContent = `${nombreCategoria}: ${valorCategoria}\n`;
+                                                if (detalles && detalles.length > 0) {
+                                                    tooltipContent += "<br><br><b>Detalles:</b><br>";
+                                                    detalles.forEach(detalle => {
 
-                                        if (detalles && detalles.length > 0) {
-                                            tooltipContent += "<br><br><b>Detalles:</b><br>";
-                                            detalles.forEach(detalle => {
+                                                        tooltipContent += `${detalle.nombre}: ${detalle.valor}<br>`;
+                                                    });
+                                                } else {
+                                                    tooltipContent += "No hay detalles disponibles";
+                                                }
 
-                                                tooltipContent += `${detalle.nombre}: ${detalle.valor}<br>`;
-                                            });
-                                        } else {
-                                            tooltipContent += "No hay detalles disponibles";
-                                        }
-
-                                        return tooltipContent;
-                                    }
-                                },
-                                legend: {
-                                    orient: 'vertical',
-                                    left: 'left'
-                                },
-                                series: [{
-                                    name: 'Severity',
-                                    type: 'pie',
-                                    radius: '50%',
-                                    data: [{
-                                        value: cv3[0],
-                                        name: 'CRITICAL',
-                                        itemStyle: {
-                                            color: '#000000'
-                                        }
-                                    },
-                                        {
-                                            value: cv3[1],
-                                            name: 'HIGH',
-                                            itemStyle: {
-                                                color: '#e30a0a'
+                                                return tooltipContent;
                                             }
                                         },
-                                        {
-                                            value: cv3[2],
-                                            name: 'MEDIUM',
-                                            itemStyle: {
-                                                color: '#fff200'
-                                            }
+                                        legend: {
+                                            orient: 'vertical',
+                                            left: 'left'
                                         },
-                                        {
-                                            value: cv3[3],
-                                            name: 'LOW',
-                                            itemStyle: {
-                                                color: '#605c5c'
+                                        series: [{
+                                            name: 'Severity',
+                                            type: 'pie',
+                                            radius: '50%',
+                                            data: [{
+                                                value: cv3[0],
+                                                name: 'CRITICAL',
+                                                itemStyle: {
+                                                    color: '#000000'
+                                                }
+                                            },
+                                                {
+                                                    value: cv3[1],
+                                                    name: 'HIGH',
+                                                    itemStyle: {
+                                                        color: '#e30a0a'
+                                                    }
+                                                },
+                                                {
+                                                    value: cv3[2],
+                                                    name: 'MEDIUM',
+                                                    itemStyle: {
+                                                        color: '#fff200'
+                                                    }
+                                                },
+                                                {
+                                                    value: cv3[3],
+                                                    name: 'LOW',
+                                                    itemStyle: {
+                                                        color: '#0CC759'
+                                                    }
+                                                }
+                                            ],
+                                            emphasis: {
+                                                itemStyle: {
+                                                    shadowBlur: 10,
+                                                    shadowOffsetX: 0,
+                                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                                }
                                             }
-                                        }
-                                    ],
-                                    emphasis: {
-                                        itemStyle: {
-                                            shadowBlur: 10,
-                                            shadowOffsetX: 0,
-                                            shadowColor: 'rgba(0, 0, 0, 0.5)'
-                                        }
-                                    }
-                                }]
+                                        }]
+                                    });
                             });
-                        });
-                    </script>
+                        </script>
+                    </div>
+
                     <!-- End Pie Chart -->
 
                 </div>
@@ -100,92 +101,93 @@
         <div class="col-lg-6 ">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">CVSS V2 </h5>
+                    <h5 class="card-title">Distribución de vulnerabilidades   V2 </h5>
 
                     <!-- Pie Chart -->
-                    <div id="pieChart2" style="min-height: 400px;" class="echart"></div>
+                    <div id="pieChart2" style="min-height: 400px;" class="echart">
+                        <script>
+                            document.addEventListener("DOMContentLoaded", () => {
+                                let cv2 = {!! json_encode($cveDos) !!};
+                                let datosPorCategoria2 = {!! json_encode($datosPorCategoria2) !!};
 
-                    <script>
-                        document.addEventListener("DOMContentLoaded", () => {
-                            let cv2 = {!! $cveDos !!};
-                            let datosPorCategoria = {!! $datosPorCategoria2 !!};
-                            console.log(datosPorCategoria)
-                            echarts.init(document.querySelector("#pieChart2")).setOption({
-                                title: {
-                                    text: 'Puntaje',
-                                    subtext: 'distribución',
-                                    left: 'center'
-                                },
-                                tooltip: {
-                                    trigger: 'item',
-                                    formatter: function(params) {
-                                        let nombreCategoria = params.name;
-                                        let valorCategoria = params.value;
-                                        let detalles = datosPorCategoria[nombreCategoria];
+                                echarts.init(document.querySelector("#pieChart2")).setOption({
+                                    title: {
+                                        text: 'Puntaje',
+                                        subtext: 'distribución',
+                                        left: 'center'
+                                    },
+                                    tooltip: {
+                                        trigger: 'item',
+                                        formatter: function(params) {
+                                            let nombreCategoria = params.name;
+                                            let valorCategoria = params.value;
+                                            let detalles = datosPorCategoria2[nombreCategoria];
 
-                                        let tooltipContent = `${nombreCategoria}: ${valorCategoria}\n`;
+                                            let tooltipContent = `${nombreCategoria}: ${valorCategoria}\n`;
 
-                                        if (detalles && detalles.length > 0) {
-                                            tooltipContent += "<br><br><b>Detalles:</b><br>";
-                                            detalles.forEach(detalle => {
+                                            if (detalles && detalles.length > 0) {
+                                                tooltipContent += "<br><br><b>Detalles:</b><br>";
+                                                detalles.forEach(detalle => {
 
-                                                tooltipContent += `${detalle.nombre}: ${detalle.valor}<br>`;
-                                            });
-                                        } else {
-                                            tooltipContent += "No hay detalles disponibles";
-                                        }
+                                                    tooltipContent += `${detalle.nombre}: ${detalle.valor}<br>`;
+                                                });
+                                            } else {
+                                                tooltipContent += "No hay detalles disponibles";
+                                            }
 
-                                        return tooltipContent;
-                                    }
-                                },
-                                legend: {
-                                    orient: 'vertical',
-                                    left: 'left'
-                                },
-                                series: [{
-                                    name: 'Severity',
-                                    type: 'pie',
-                                    radius: '50%',
-                                    data: [{
-                                        value: cv2[0],
-                                        name: 'CRITICAL',
-                                        itemStyle: {
-                                            color: '#000000' // Cambia el color para la sección CRITICAL
+                                            return tooltipContent;
                                         }
                                     },
-                                        {
-                                            value: cv2[1],
-                                            name: 'HIGH',
+                                    legend: {
+                                        orient: 'vertical',
+                                        left: 'left'
+                                    },
+                                    series: [{
+                                        name: 'Severity',
+                                        type: 'pie',
+                                        radius: '50%',
+                                        data: [{
+                                            value: cv2[0],
+                                            name: 'CRITICAL',
                                             itemStyle: {
-                                                color: '#e30a0a' // Cambia el color para la sección CRITICAL
+                                                color: '#000000' // Cambia el color para la sección CRITICAL
                                             }
                                         },
-                                        {
-                                            value: cv2[2],
-                                            name: 'MEDIUM',
-                                            itemStyle: {
-                                                color: '#fff200' // Cambia el color para la sección CRITICAL
+                                            {
+                                                value: cv2[1],
+                                                name: 'HIGH',
+                                                itemStyle: {
+                                                    color: '#e30a0a' // Cambia el color para la sección CRITICAL
+                                                }
+                                            },
+                                            {
+                                                value: cv2[2],
+                                                name: 'MEDIUM',
+                                                itemStyle: {
+                                                    color: '#fff200' // Cambia el color para la sección CRITICAL
+                                                }
+                                            },
+                                            {
+                                                value: cv2[3],
+                                                name: 'LOW',
+                                                itemStyle: {
+                                                    color: '#0CC759' // Cambia el color para la sección CRITICAL
+                                                }
                                             }
-                                        },
-                                        {
-                                            value: cv2[3],
-                                            name: 'LOW',
+                                        ],
+                                        emphasis: {
                                             itemStyle: {
-                                                color: '#605c5c' // Cambia el color para la sección CRITICAL
+                                                shadowBlur: 10,
+                                                shadowOffsetX: 0,
+                                                shadowColor: 'rgba(0, 0, 0, 0.5)'
                                             }
                                         }
-                                    ],
-                                    emphasis: {
-                                        itemStyle: {
-                                            shadowBlur: 10,
-                                            shadowOffsetX: 0,
-                                            shadowColor: 'rgba(0, 0, 0, 0.5)'
-                                        }
-                                    }
-                                }]
+                                    }]
+                                });
                             });
-                        });
-                    </script>
+                        </script>
+                    </div>
+
                     <!-- End Pie Chart -->
 
                 </div>
@@ -193,7 +195,16 @@
         </div>
         </div></section>
 
+    <style>
+        .date-range-input {
+            display: flex;
+            align-items: center;
+        }
 
+        .date-range-separator {
+            margin: 0 10px;
+        }
+    </style>
     <section class="section">
         <div class="row">
             <div class="col-lg-12">
@@ -204,7 +215,7 @@
 
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label">Filtro</label>
-                                <div class="col-sm-3">
+                                <div class="col-sm-2">
                                     <select class="form-select" id="filtro" name="filtro">
                                         @foreach($listaFiltros as $listaFiltro)
                                         <option class="opcionFiltro" value="{{$listaFiltro->nombre}}" {{$filtro == $listaFiltro->nombre ? 'selected' : '' }}>
@@ -212,8 +223,18 @@
                                         @endforeach
                                     </select>
                                 </div>
+                                <div class="col-sm-5">
+
+                                    <div class="date-range-input d-flex">
+                                        <input type="date"  class="form-control" id="fechaInicio" name="fechaInicio" min="2023-05-01" max="{{ date('Y-m-d') }}">
+                                        <span class="date-range-separator"> - </span>
+                                        <input type="date" class="form-control" id="fechaFin" name="fechaFin" min="2023-05-01" max="{{ date('Y-m-d') }}">
+                                    </div>
+                                </div>
+
                                 <div class="col-sm-3">
-                                    <a href="" class="btn btn-outline-success" id="BtnBuscarFiltro">Buscar</a>
+                                    <button class="btn btn-outline-success" id="BtnBuscarFiltro">Buscar</button>
+
                                 </div>
                             </div>
 
@@ -237,7 +258,7 @@
                                     <th scope="row">{{$key + 1}}</th>
                                     <td>{{$cve->codigo}}</td>
                                     <td>{{$cve->sourceIdentifier}}</td>
-                                    <td class="{{ $cve->metrics->isNotEmpty() ? Util::valorColor( $cve->metrics->first()->cvssData_baseScore) : 'text-secondary' }}">  <i class="fas fa-circle circle-icon " id="bolita"></i> {{ $cve->metrics->isNotEmpty() ? Util::valorTexto( $cve->metrics->first()->cvssData_baseScore) : 'Unknown' }}</td>
+                                    <td class="{{ $cve->metrics->isNotEmpty() ? Util::valorColor( $cve->metrics->first()->cvssData_baseScore) : 'text-secondary' }}">  <i class="fas fa-circle circle-icon " id="bolita"></i> {{ $cve->metrics->isNotEmpty() ? Util::valorTexto( $cve->metrics->first()->cvssData_baseScore) : 'UNKNOWN' }}</td>
                                     <td>{{Util::formatoFechaPersonalizado($cve->published)}}</td>
                                     <td>
                                         <button type="button" data-bs-target="#largeModal" data-bs-toggle="modal" class="btn btn-m text-primary btnVer" data-id="{{$cve->id}}"><i class="bi bi-eye-fill"></i></button>
@@ -287,34 +308,48 @@
                 <h5 class="card-title"> Vulnerabilidades del mes de {{Util::nombreMes($ultimoMes)}}</h5>
 
                 <!-- Bar Chart -->
-                <div id="barChart" style="min-height: 400px;" class="echart"></div>
+                <div id="barChart" style="min-height: 400px;" class="echart">
+                    <script>
+                        document.addEventListener("DOMContentLoaded", () => {
+                            let nombreFiltros = {!! json_encode($arregloFiltros) !!};
+                            let resultadoFiltros = {!! json_encode($resultadoFiltros) !!};
+                            let colores = [
+                                '#FF5733', '#FFC300', '#8AFF33', '#33FFD1', '#336BFF', '#FF33A8', '#FF3333', '#33FF33', '#33FFFF', '#FF336B',
+                                '#FF33FF', '#FF7733', '#33FFA8', '#33FF77', '#A833FF', '#33A8FF', '#FFD133', '#33D1FF', '#FFD166', '#A833A8'
+                            ]; // Paleta de colores
 
-                <script>
-                    document.addEventListener("DOMContentLoaded", () => {
-                        let nombreFiltros = {!! json_encode($arregloFiltros) !!};
-                        let resultadoFiltros = {!! json_encode($resultadoFiltros) !!};
+                            let dataSeries  = resultadoFiltros.map((value, index) => {
+                                return {
+                                    value: value,
+                                    itemStyle: {
+                                        color: colores[index] // Asignar color según posición en el arreglo
+                                    }
+                                };
+                            });
 
-                        echarts.init(document.querySelector("#barChart")).setOption({
-                            xAxis: {
-                                type: 'category',
-                                data: nombreFiltros
-                            },
-                            yAxis: {
-                                type: 'value'
-                            },
-                            series: [{
-                                data: resultadoFiltros,
-                                type: 'bar'
-                            }],
-                            tooltip: {  // Agrega la configuración del tooltip
-                                trigger: 'axis',
-                                axisPointer: {
-                                    type: 'shadow'
+                            echarts.init(document.querySelector("#barChart")).setOption({
+                                xAxis: {
+                                    type: 'category',
+                                    data: nombreFiltros
+                                },
+                                yAxis: {
+                                    type: 'value'
+                                },
+                                series: [{
+                                    data: dataSeries ,
+                                    type: 'bar'
+                                }],
+                                tooltip: {  // Agrega la configuración del tooltip
+                                    trigger: 'axis',
+                                    axisPointer: {
+                                        type: 'shadow'
+                                    }
                                 }
-                            }
+                            });
                         });
-                    });
-                </script>
+                    </script>
+                </div>
+
                 <!-- End Bar Chart -->
 
             </div>
@@ -326,7 +361,7 @@
             <h5 class="card-title">Últimos 20 identificadores de vulnerabilidad puntuados y resúmenes</h5>
 
             <!-- Table with hoverable rows -->
-            <table class="table table-hover">
+            <table class="table datatable">
                 <thead>
                 <tr>
 
@@ -344,9 +379,12 @@
                     <td>{{$cve->descriptions->first()->value}}</td>
                     <td>{{$cve->metrics->isNotEmpty() ?  $cve->metrics->first()->cvssData_version : '#' }}</td>
                     <td class="{{$cve->metrics->isNotEmpty() ? (Util::valorColor( $cve->metrics->first()->cvssData_baseScore)) :'text-secondary'}}">
-                        <label class="btn {{$cve->metrics->isNotEmpty() ? (Util::valorColorButton( $cve->metrics->first()->cvssData_baseScore)) :'btn-secondary'}}">
-                            {{$cve->metrics->isNotEmpty() ? (Util::valorTexto( $cve->metrics->first()->cvssData_baseScore)) :'Unknown'}}
-                            {{$cve->metrics->isNotEmpty() ?  $cve->metrics->first()->cvssData_baseScore :''}}
+                        <label class="  text-white btn {{$cve->metrics->isNotEmpty() ? (Util::valorColorButton( $cve->metrics->first()->cvssData_baseScore)) :'btn-secondary'}}" >
+
+                                {{$cve->metrics->isNotEmpty() ? (Util::valorTexto( $cve->metrics->first()->cvssData_baseScore)) :'UNKNOWN'}}
+                                {{$cve->metrics->isNotEmpty() ?  $cve->metrics->first()->cvssData_baseScore :''}}
+
+
                         </label>
 
                     </td>
@@ -355,6 +393,7 @@
 
                 </tbody>
             </table>
+
             <!-- End Table with hoverable rows -->
 
         </div>
@@ -376,9 +415,26 @@
             $('#modalDatos').modal('show');
         });
 
-        $('#filtro').change(function () {
-            const opcionSeleccionada = $(this).val();
-            $('#BtnBuscarFiltro').attr('href','/home?filtro='+opcionSeleccionada)
+
+        $('#BtnBuscarFiltro').click(function (){
+            let opcionSeleccionada = $('#filtro').val();
+            var fechaInicio = $('#fechaInicio').val();
+            var fechaFin = $('#fechaFin').val();
+            let url = '/home?filtro='+opcionSeleccionada;
+            if (fechaInicio && fechaFin) {
+                // Convertir las fechas en objetos Date
+                var dateInicio = new Date(fechaInicio);
+                var dateFin = new Date(fechaFin);
+                if (dateInicio <= dateFin) {
+                    url+=`&&inicio=${fechaInicio}&&fin=${fechaFin}`;
+                    window.location.href = url;
+                } else {
+                    toastr.warning('La fecha fin no puede ser menor que la fecha inicio','Error',{"progressBar":true})
+                }
+            }else {
+                window.location.href = url;
+            }
         });
+
     </script>
 @endsection

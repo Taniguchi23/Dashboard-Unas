@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WebController;
 use App\Http\Controllers\DashController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ValidacionController;
 
 Route::get('/',function (){
     return view('auth.login');
@@ -40,7 +41,15 @@ Route::group(['middleware' => ['auth', 'user.status']],function (){
         Route::post('/service/suscribirse','suscribirse');
         Route::get('/service/vulnerabilidad/{id}','vulnerabilidad');
         Route::get('/service/verificarEmail/{email}','verificarEmail');
+        Route::get('/service/graficos','graficos');
     });
+});
+
+Route::controller(ValidacionController::class)->group(function (){
+    Route::get('recuperar-password','vista')->name('validacion.vista');
+    Route::post('recuperar-password','recuperar')->name('validacion.recuperar');
+    Route::get('recuperar-password/{token}','vistaRecuperar')->name('validacion.vistaRecuperar');
+    Route::post('cambiar-password/{id}','cambiar')->name('validacion.cambiar');
 });
 
 

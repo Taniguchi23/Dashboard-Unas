@@ -29,6 +29,9 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
 
+
+
+
     <!-- Template Main CSS File -->
     <link href="/assets/css/style.css" rel="stylesheet">
 @yield('link')
@@ -162,6 +165,7 @@
 
 <main id="main" class="main">
 
+
     @yield('content')
 
 </main><!-- End #main -->
@@ -193,9 +197,10 @@
 <script src="/assets/vendor/php-email-form/validate.js"></script>
 
 <!-- Template Main JS File -->
-<script src="/assets/js/main.js"></script>
 <script src="/assets/js/jquery-3.7.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+<script src="/assets/js/main.js"></script>
 @yield('script')
 
 </body>

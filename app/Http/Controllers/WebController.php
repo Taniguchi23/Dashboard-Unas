@@ -13,78 +13,8 @@ use Illuminate\Support\Facades\Session;
 class WebController extends Controller
 {
     public function index(Request $request){
-
-      /*  $tiposContadosDos = Metric::where('version', 2)
-            ->selectRaw('
-        CASE
-            WHEN cvssData_baseScore >= 0 AND cvssData_baseScore < 5 THEN "LOW"
-            WHEN cvssData_baseScore >= 5 AND cvssData_baseScore < 7 THEN "MEDIUM"
-            WHEN cvssData_baseScore >= 7 AND cvssData_baseScore < 9 THEN "HIGH"
-            WHEN cvssData_baseScore >= 9 AND cvssData_baseScore <= 10 THEN "CRITICAL"
-        END AS tipo,
-        COUNT(*) as total
-    ')
-            ->groupBy('tipo')
-            ->orderBy('total', 'desc')
-            ->get();
-
-        $tiposContadosTres = Metric::where('version', 3)
-            ->selectRaw('
-        CASE
-            WHEN cvssData_baseScore >= 0 AND cvssData_baseScore < 5 THEN "LOW"
-            WHEN cvssData_baseScore >= 5 AND cvssData_baseScore < 7 THEN "MEDIUM"
-            WHEN cvssData_baseScore >= 7 AND cvssData_baseScore < 9 THEN "HIGH"
-            WHEN cvssData_baseScore >= 9 AND cvssData_baseScore <= 10 THEN "CRITICAL"
-        END AS tipo,
-        COUNT(*) as total
-    ')
-            ->groupBy('tipo')
-            ->orderBy('total', 'desc')
-            ->get();
-
-        $cveDos = [0,0,0,0];
-        $cveTres = [0,0,0,0];
-
-        foreach ($tiposContadosDos as  $tiposContadosDo){
-            if ($tiposContadosDo->tipo == 'CRITICAL'){
-                $cveDos[0] =  $tiposContadosDo->total;
-            }else if($tiposContadosDo->tipo == 'HIGH'){
-                $cveDos[1] =  $tiposContadosDo->total;
-            }else if($tiposContadosDo->tipo == 'MEDIUM'){
-                $cveDos[2] =  $tiposContadosDo->total;
-            }else{
-                $cveDos[3] =  $tiposContadosDo->total;
-            }
-        }
-
-        foreach ($tiposContadosTres as  $tiposContadosTre){
-            if ($tiposContadosTre->tipo == 'CRITICAL'){
-                $cveTres[0] =  $tiposContadosTre->total;
-            }else if($tiposContadosTre->tipo == 'HIGH'){
-                $cveTres[1] =  $tiposContadosTre->total;
-            }else if($tiposContadosTre->tipo == 'MEDIUM'){
-                $cveTres[2] =  $tiposContadosTre->total;
-            }else{
-                $cveTres[3] =  $tiposContadosTre->total;
-            }
-        }*/
-
         $arregloFiltros = Filtro::where('estado','A')->orderBy('orden')->pluck('nombre')->toArray();
-
-        $cvesUltimos = Cve::whereIn('id', function ($query) use ($arregloFiltros) {
-            $query->select('cve_id')
-                ->from('descriptions')
-                ->where(function ($query) use ($arregloFiltros) {
-                    foreach ($arregloFiltros as $filtro) {
-                        $query->orWhere('value', 'LIKE', "%$filtro%");
-                    }
-                });
-        })
-            ->orderByDesc('published')
-            ->take(20)
-            ->get();
-
-
+        //graficos
 
         $metricsCritical3  = Metric::whereBetween('cvssData_baseScore',[9,10])->where('version',3)->get();
         $metricsHigh3  = Metric::whereBetween('cvssData_baseScore',[7,8.9])->where('version',3)->get();
@@ -135,26 +65,26 @@ class WebController extends Controller
             ];
         }
         $tempContenedorHighFiltros3 = [];
-            foreach ($contenedorHighFiltros3 as $key => $itemCritical3){
-                $tempContenedorHighFiltros3[] = [
-                    'nombre' => $key,
-                    'valor' => $itemCritical3
-                ];
-            }
+        foreach ($contenedorHighFiltros3 as $key => $itemCritical3){
+            $tempContenedorHighFiltros3[] = [
+                'nombre' => $key,
+                'valor' => $itemCritical3
+            ];
+        }
         $tempContenedorMediumFiltros3 = [];
-            foreach ($contenedorMediumFiltros3 as $key => $itemCritical3){
-                $tempContenedorMediumFiltros3[] = [
-                    'nombre' => $key,
-                    'valor' => $itemCritical3
-                ];
-            }
+        foreach ($contenedorMediumFiltros3 as $key => $itemCritical3){
+            $tempContenedorMediumFiltros3[] = [
+                'nombre' => $key,
+                'valor' => $itemCritical3
+            ];
+        }
         $tempContenedorLowFiltros3 = [];
-            foreach ($contenedorLowlFiltros3 as $key => $itemCritical3){
-                $tempContenedorLowFiltros3[] = [
-                    'nombre' => $key,
-                    'valor' => $itemCritical3
-                ];
-            }
+        foreach ($contenedorLowlFiltros3 as $key => $itemCritical3){
+            $tempContenedorLowFiltros3[] = [
+                'nombre' => $key,
+                'valor' => $itemCritical3
+            ];
+        }
 
 
 
@@ -248,32 +178,9 @@ class WebController extends Controller
             'MEDIUM' => $tempContenedorMediumFiltros2,
             'LOW' => $tempContenedorLowFiltros2,
         ];
-
-        //dd($datosPorCategoria2);
-        ///
-
-
-
-
-
-        if ($request->has('filtro')) {
-            $filtroSelect = $request->input('filtro');
-
-        } else {
-            $filtroSelect = 'CISCO';
-        }
-
-        $cves = Cve::whereHas('descriptions', function ($query) use ($filtroSelect) {
-            $query->where('value','like', '%'.$filtroSelect.'%');
-        })->orderByDesc('published')->get();
-
-        $listaFiltros = Filtro::where('estado','A')->orderBy('orden')->get();
-
-
         $fechaActual = date('Y-m-d');
         $mesAnterior = date('m', strtotime('-1 month', strtotime($fechaActual)));
         $mesAnterior = intval($mesAnterior);
-
         $resultados = [];
         $anioActual = date('Y');
         foreach ($arregloFiltros as  $filtro){
@@ -286,6 +193,58 @@ class WebController extends Controller
                 ->count('cves.id');
 
         }
+        //fin graficos
+
+
+
+
+
+        //20 ultimos
+        $cvesUltimos = Cve::whereIn('id', function ($query) use ($arregloFiltros) {
+            $query->select('cve_id')
+                ->from('descriptions')
+                ->where(function ($query) use ($arregloFiltros) {
+                    foreach ($arregloFiltros as $filtro) {
+                        $query->orWhere('value', 'LIKE', "%$filtro%");
+                    }
+                });
+        })
+            ->orderByDesc('published')
+            ->take(20)
+            ->get();
+
+
+        if ($request->has('filtro')) {
+            $filtroSelect = $request->input('filtro');
+        } else {
+            $filtroSelect = 'CISCO';
+        }
+
+        if ($request->has('inicio') && $request->has('fin')) {
+
+            $inicio = $request->input('inicio').' 00:00:00';
+            $fin = $request->input('fin').' 23:59:59';
+            $cves = Cve::whereHas('descriptions', function ($query) use ($filtroSelect) {
+                $query->where('value', 'like', '%' . $filtroSelect . '%');
+            })
+                ->whereBetween('published', [$inicio, $fin]) // Agregar el rango de fechas aquí
+                ->orderByDesc('published')
+                ->get();
+        } else {
+
+            $cves = Cve::whereHas('descriptions', function ($query) use ($filtroSelect) {
+                $query->where('value','like', '%'.$filtroSelect.'%');
+            })->orderByDesc('published')->get();
+        }
+
+
+
+        $listaFiltros = Filtro::where('estado','A')->orderBy('orden')->get();
+
+
+
+
+
 
 
 
@@ -293,17 +252,19 @@ class WebController extends Controller
 
 
         $datos = [
-            'cveDos' =>  json_encode($cveDos),
-            'cveTres' => json_encode($cveTres),
+
             'listaFiltros' => $listaFiltros,
             'cves' => $cves,
             'cvesUltimos' => $cvesUltimos,
             'filtro' => $filtroSelect,
             'ultimoMes' => $mesAnterior,
              'arregloFiltros' => $arregloFiltros,
+            'datosPorCategoria3' => $datosPorCategoria3,
+            'datosPorCategoria2' => $datosPorCategoria2,
+            'cveDos' =>  $cveDos,
+            'cveTres' => $cveTres,
             'resultadoFiltros' => $resultados,
-            'datosPorCategoria3' => json_encode($datosPorCategoria3),
-            'datosPorCategoria2' => json_encode($datosPorCategoria2),
+
 
         ];
 

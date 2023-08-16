@@ -1,144 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>RESEGTI - Sistema de vulnerabilidades</title>
+    <link href="https://fonts.googleapis.com/css?family=Karla:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.8.95/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/login.css">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
-    <title> RESEGTI - Sistema de vulnerabilidades</title>
-    <meta content="" name="description">
-    <meta content="" name="keywords">
-
-    <!-- Favicons -->
-    <link href="/assets/img/logoresegti.jpeg" rel="icon">
-    <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
-
-    <!-- Google Fonts -->
-    <link href="https://fonts.gstatic.com" rel="preconnect">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
-
-    <!-- Vendor CSS Files -->
-    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-    <link href="/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-    <link href="/assets/vendor/quill/quill.snow.css" rel="stylesheet">
-    <link href="/assets/vendor/quill/quill.bubble.css" rel="stylesheet">
-    <link href="/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
-    <link href="/assets/vendor/simple-datatables/style.css" rel="stylesheet">
-
-    <!-- Template Main CSS File -->
-    <link href="/assets/css/style.css" rel="stylesheet">
-
-    <!-- =======================================================
-    * Template Name: NiceAdmin - v2.2.2
-    * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-    * Author: BootstrapMade.com
-    * License: https://bootstrapmade.com/license/
-    ======================================================== -->
 </head>
-
 <body>
-
 <main>
-    <div class="container">
-
-        <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
-                        <div class="logo d-flex justify-content-center justify-content-center py-4 " >
-                            <img src="/assets/img/logoresegti.jpeg" alt="" style="max-height: 75px" >
-                            <img src="/assets/img/logounas.png" alt="" style="max-height: 75px">
-                        </div>
-
-                        <div class="d-flex justify-content-center py-4">
-
-                            <a href="/" class="logo d-flex align-items-center w-auto">
-
-                                <span class="d-none d-lg-block">RESEGTI</span>
-                            </a>
-                        </div><!-- End Logo -->
-                        @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        {{ $error }}
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
-                        @if (session('error'))
-                            <div class="alert alert-warning bg-warning text-light border-0 alert-dismissible fade show" role="alert">
-                                {{session('error')}}
-                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        @endif
-
-                        <div class="card mb-3">
-
-                            <div class="card-body">
-
-                                <div class="pt-4 pb-2">
-                                    <h5 class="card-title text-center pb-0 fs-4">
-                                        Ingrese a su cuenta</h5>
-                                    <p class="text-center small">Ingrese su email y contraseña para iniciar sesión</p>
-                                </div>
-
-                                <form class="row g-3 needs-validation" action="{{route('login')}}" method="post">
-                                    @csrf
-                                    <div class="col-12">
-                                        <label for="yourUsername" class="form-label">Email</label>
-                                        <div class="input-group has-validation">
-                                            <span class="input-group-text" >@</span>
-                                            <input type="email" name="email" class="form-control" required>
-                                            <div class="invalid-feedback">Por favor ingrese un email válido.</div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-12">
-                                        <label for="yourPassword" class="form-label">Password</label>
-                                        <input type="password" name="password" class="form-control" required>
-                                        <div class="invalid-feedback">Por favor ingrese una contraseña.</div>
-                                    </div>
-
-                                    <div class="col-12">
-                                        <button class="btn btn-primary w-100" type="submit">Login</button>
-                                    </div>
-
-                                </form>
-
-                            </div>
-                        </div>
-
-                        <div class="credits">
-
-                            Designed by <a href="#">TeamRESEGTI</a>
-                        </div>
-
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6 login-section-wrapper">
+                <div class="brand-wrapper text-center">
+                    <img src="/assets/img/logounas.png" alt="sdsd" style="max-height: 75px">
+                </div>
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                {{ $error }}
+                            @endforeach
+                        </ul>
                     </div>
+                @endif
+                @if (session('error'))
+                    <div class="alert alert-warning bg-warning text-light border-0 alert-dismissible fade show" role="alert">
+                        {{session('error')}}
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+                @if (session('cambio'))
+                    <div class="alert alert-success bg-success text-light border-0 alert-dismissible fade show" role="alert">
+                        {{session('cambio')}}
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" ></button>
+                    </div>
+                @endif
+                <div class="login-wrapper my-auto">
+                    <h1 class="login-title">Sistema de Vulnerabilidades</h1>
+                    <form action="{{route('login')}}" method="post">
+                        @csrf
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" name="email" id="email" class="form-control" placeholder="email@example.com" required>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label for="password">Contraseña</label>
+                            <input type="password" name="password" id="password" class="form-control" placeholder="******" required>
+                        </div>
+                        <div class="g-recaptcha mb-3" data-sitekey="6LcFkKgnAAAAAGCerl2DFgsI_Akiz4fyA3F49Pk-"></div>
+
+                        <input name="login" id="login" class="btn btn-block login-btn" type="submit" value="Acceso">
+                    </form>
+                    <a href="{{route('validacion.vista')}}" class="forgot-password-link">Olvidaste tu contraseña?</a>
                 </div>
             </div>
-
-        </section>
-
+            <div class="col-sm-6 px-0 d-none d-sm-block">
+                <img src="/assets/img/fiis3.jpg" alt="login image" class="login-img">
+            </div>
+        </div>
     </div>
-</main><!-- End #main -->
-
-<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-
-<!-- Vendor JS Files -->
-<script src="/assets/vendor/apexcharts/apexcharts.min.js"></script>
-<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="/assets/vendor/chart.js/chart.min.js"></script>
-<script src="/assets/vendor/echarts/echarts.min.js"></script>
-<script src="/assets/vendor/quill/quill.min.js"></script>
-<script src="/assets/vendor/simple-datatables/simple-datatables.js"></script>
-<script src="/assets/vendor/tinymce/tinymce.min.js"></script>
-<script src="/assets/vendor/php-email-form/validate.js"></script>
-
-<!-- Template Main JS File -->
-<script src="/assets/js/main.js"></script>
+</main>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 
 </body>
-
 </html>
