@@ -154,7 +154,7 @@ class DashController extends Controller
                         $referenceObject->save();
                     }
                 }
-                if (empty($listaVulnerabilidades)){
+                if (!empty($listaVulnerabilidades)){
                     $vistaDatos = 'email.reporte';
                     $asunto = 'Reporte de vulnerabilidad';
                     $remitente = 'Giusseppe Viera';
@@ -224,8 +224,6 @@ class DashController extends Controller
         foreach ($usuarios as $usuario){
             Mail::to($usuario->email)->send(new ReporteEmail($email, $vistaDatos, $asunto, $remitente));
         }
-
-
     }
 
     public function suscribirse(Request $request){

@@ -5,6 +5,7 @@ use App\Http\Controllers\WebController;
 use App\Http\Controllers\DashController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ValidacionController;
+use App\Http\Controllers\ExcelController;
 
 Route::get('/',function (){
     return view('auth.login');
@@ -16,7 +17,7 @@ Route::group(['middleware' => ['auth', 'user.status']],function (){
 
     Route::group(['prefix'=>'admin','middleware'=>'isAdmin'], function (){
         Route::controller(AdminController::class)->group(function (){
-            Route::get('/lista/{tipo}','lista')->name('admin.lista');
+            Route::get('/usuarios','lista')->name('admin.lista');
             Route::get('/filtros','filtros')->name('admin.filtro');
             Route::post('/usuario/store','usuarioStore')->name('admin.usuario.store');
             Route::get('/usuario/edit/{id}','usuarioEdit')->name('admin.usuario.edit');
@@ -43,6 +44,9 @@ Route::group(['middleware' => ['auth', 'user.status']],function (){
         Route::get('/service/verificarEmail/{email}','verificarEmail');
         Route::get('/service/graficos','graficos');
     });
+
+    Route::get('/export', [ExcelController::class, 'export'])->name('export');
+
 });
 
 Route::controller(ValidacionController::class)->group(function (){

@@ -10,12 +10,10 @@ use Response;
 
 class AdminController extends Controller
 {
-    public function lista($tipo){
-        $rol =substr($tipo,0,1);
-        $users = User::where('rol',$rol)->orderByDesc('id')->orderBy('state')->get();
+    public function lista(){
+        $users = User::where('rol','!=','S')->orderByDesc('id')->orderBy('state')->get();
         $datos = [
             'usuarios' => $users,
-            'rol' => $rol == 'u' ? 'Usuarios' : 'Administradores',
         ];
         return view('admin.lista', $datos);
     }
@@ -24,11 +22,10 @@ class AdminController extends Controller
         $user = new User;
         $user->name = $request->name;
         $user->email =  $request->email;
+        $user->rol =  $request->rol;
         $user->password = Hash::make($request->password);
-        $user->rol = substr($request->rol,0,1) == 'u'? 'U': 'A';
-
         $user->save();
-        return redirect()->route('admin.lista',['tipo'=> $request->rol])->with('mensaje', '¡Se ha creado un '.$request->rol.'!');
+        return redirect()->route('admin.lista')->with('mensaje', '¡Se ha creado un usuario!');
     }
 
     public function usuarioEdit($id){
@@ -38,6 +35,7 @@ class AdminController extends Controller
             'email' => $user->email,
             'id' => $user->id,
             'state' => $user->state,
+            'rol' => $user->rol,
         ];
 
         return response::json($datos);
@@ -47,13 +45,13 @@ class AdminController extends Controller
         $user = User::find($id);
         $user->name = $request->name;
         $user->email =  $request->email;
+        $user->rol =  $request->rol;
         if ($request->filled('password')){
             $user->password = Hash::make($request->password);
         }
         $user->state = $request->estado;
-        $rol = $user->rol== 'U'? 'usuarios': 'administradores';
         $user->save();
-        return redirect()->route('admin.lista',['tipo'=> $rol])->with('mensaje', '¡Se ha actulizado un '.$rol.'!');
+        return redirect()->route('admin.lista')->with('mensaje', '¡Se ha actualizado un usuario!');
     }
     public function filtros(){
         $filtros = Filtro::where('estado','A')->orderBy('orden')->get();

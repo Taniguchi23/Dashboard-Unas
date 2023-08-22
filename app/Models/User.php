@@ -42,4 +42,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function getRol(){
+        return $this->rol == 'U' ? 'Usuario' : ($this->rol == 'A' ? 'Administrador' : 'SuperAdmin');
+    }
 }

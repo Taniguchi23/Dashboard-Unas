@@ -6,7 +6,7 @@
         <div class="col-lg-6 ">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Distribución de vulnerabilidades V3</h5>
+                    <h5 class="card-title">Distribución de vulnerabilidades por CVSS v3</h5>
 
                     <!-- Pie Chart -->
                     <div id="pieChart" style="min-height: 400px;" class="echart">
@@ -101,7 +101,7 @@
         <div class="col-lg-6 ">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Distribución de vulnerabilidades   V2 </h5>
+                    <h5 class="card-title">Distribución de vulnerabilidades por CVSS v2</h5>
 
                     <!-- Pie Chart -->
                     <div id="pieChart2" style="min-height: 400px;" class="echart">
@@ -211,7 +211,15 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Lista de vulnerabilidades</h5>
+                        <form action="{{ route('export') }}" method="GET">
+                            @csrf
+
+                        <div class="d-flex align-items-center justify-content-between">
+                            <h5 class="card-title">Lista de vulnerabilidades</h5>
+                            <div class="col-sm-1">
+                                <button type="submit" class=" btn  text-success" title="Descargar Excel"><i class="ri-file-excel-2-fill" style="font-size: 24px;"></i></button>
+                            </div>
+                        </div>
 
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label">Filtro</label>
@@ -219,7 +227,7 @@
                                     <select class="form-select" id="filtro" name="filtro">
                                         @foreach($listaFiltros as $listaFiltro)
                                         <option class="opcionFiltro" value="{{$listaFiltro->nombre}}" {{$filtro == $listaFiltro->nombre ? 'selected' : '' }}>
-                                            {{$listaFiltro->nombre}} <i class="fa-solid fa-trash"></i></option>
+                                            {{$listaFiltro->nombre}} </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -234,9 +242,10 @@
 
                                 <div class="col-sm-3">
                                     <button class="btn btn-outline-success" id="BtnBuscarFiltro">Buscar</button>
-
                                 </div>
+
                             </div>
+                        </form>
 
                         <p></p>
 

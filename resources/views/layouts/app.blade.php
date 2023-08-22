@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Vulnerability System</title>
+    <title>OBSERVATORIO DE VULNERABILIDADES COMUNES</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -45,7 +45,7 @@
 
     <div class="d-flex align-items-center justify-content-between">
         <a href="{{route('home')}}" class="logo d-flex align-items-center">
-            <img src="/assets/img/logounas.png" alt=""> SISTEMA DE VULNERABILIDADES
+            <img src="/assets/img/logounas.png" alt=""> OBSERVATORIO DE VULNERABILIDADES COMUNES
         </a>
         <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
@@ -125,15 +125,11 @@
             </a>
             <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
-                    <a href="{{route('admin.lista','usuarios')}}" class="text-success">
+                    <a href="{{route('admin.lista')}}" class="text-success">
                         <i class="bi bi-circle"></i><span>Usuarios</span>
                     </a>
                 </li>
-                <li>
-                    <a href="{{route('admin.lista','administradores')}}" class="text-success">
-                        <i class="bi bi-circle"></i><span>Administradores</span>
-                    </a>
-                </li>
+
                 <li>
                     <a href="{{route('admin.filtro')}}" class="text-success">
                         <i class="bi bi-circle"></i><span>Filtros</span>
